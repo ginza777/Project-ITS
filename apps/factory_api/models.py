@@ -63,3 +63,5 @@ class Warehouse(models.Model):
         db_table = 'warehouse'
         verbose_name_plural = 'warehouse'
         verbose_name = 'warehouse'
+        ordering = ['remainder']
+
