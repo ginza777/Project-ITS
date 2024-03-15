@@ -47,9 +47,14 @@ class ProductMaterial(models.Model):
 
 class Warehouse(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    for_check_remainder_count = models.FloatField()
+    for_check_remainder_count = models.FloatField(null=True, blank=True)
     remainder = models.FloatField()
     price = models.FloatField()
+
+    def save(self, *args, **kwargs):
+        if not self.for_check_remainder_count:
+            self.for_check_remainder_count = self.remainder
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return str(self.material.name)
