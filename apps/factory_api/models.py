@@ -52,7 +52,7 @@ class Warehouse(models.Model):
     price = models.FloatField()
 
     def save(self, *args, **kwargs):
-        if not self.for_check_remainder_count:
+        if  self.for_check_remainder_count is None:
             self.for_check_remainder_count = self.remainder
         super().save(*args, **kwargs)
 

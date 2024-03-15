@@ -22,15 +22,16 @@ class GetMaterials:
             print(f"Bizga {count} ta {product.name} uchun  kerak:")
             for product_material in product_materials:
                 print(
-                    f"{product_material.material.name} - {product_material.quantity * count}  omborda borligi: {Warehouse.objects.filter(material=product_material.material).aggregate(models.Sum('for_check_remainder_count'))['for_check_remainder_count__sum']}  ")
+                    f"{product_material.material.name} - {product_material.quantity * count}  omborda borligi: {Warehouse.objects.filter(material=product_material.material).aggregate(models.Sum('for_check_remainder_count'))}  ")
 
             material_data_list = []
+            print(100*'-_')
             for product_material in product_materials:
                 p_material = product_material.material  # material nomi
                 warehouse_material_remainders = Warehouse.objects.filter(material=p_material)  # material qolgan miqdori
                 warehouse_material_remainders_summ = Warehouse.objects.filter(material=p_material).aggregate(
                     models.Sum('for_check_remainder_count'))  # material qolgan miqdori
-                print(100 * "*")
+
                 if warehouse_material_remainders_summ[
                     'for_check_remainder_count__sum'] < product_material.quantity * count:
                     material_data = {
@@ -72,6 +73,7 @@ class GetMaterials:
                 else:
                     p_count = product_material.quantity * count
                     for warehouse_material_remainder in warehouse_material_remainders:
+
                         if warehouse_material_remainder.for_check_remainder_count >= p_count > 0:
                             material_data = {
                                 "warehouse_id": warehouse_material_remainder.id,
@@ -83,6 +85,7 @@ class GetMaterials:
                             warehouse_material_remainder.for_check_remainder_count -= p_count
                             warehouse_material_remainder.save()
                             p_count = 0
+
                         if 0 < warehouse_material_remainder.for_check_remainder_count < p_count:
                             material_data = {
                                 "warehouse_id": warehouse_material_remainder.id,
@@ -91,10 +94,16 @@ class GetMaterials:
                                 "price": warehouse_material_remainder.price
                             }
                             p_count -= warehouse_material_remainder.for_check_remainder_count
+
                             warehouse_material_remainder.for_check_remainder_count = 0
-                            material_data_list.append(material_data)
+
                             warehouse_material_remainder.save()
+
+                            material_data_list.append(material_data)
+
                         result_data['product_materials'] = material_data_list
+                        warehouse_material_remainder.save()
+
             result.append(result_data)
         print(result)
         return result
