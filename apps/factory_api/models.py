@@ -3,10 +3,10 @@ import uuid
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    code = models.CharField(max_length=50)
+    code = models.CharField(max_length=50, unique=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.code or self.code == '' or self.code == 'None':
+        if not self.code :
             self.code = str(uuid.uuid4())
         super().save(*args, **kwargs)
 
