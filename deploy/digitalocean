@@ -67,7 +67,7 @@ Group=www-data
 WorkingDirectory=/var/www/projects/Project-ITS/Project-ITS
 ExecStart=/var/www/projects/Project-ITS/env/bin/gunicorn \
           --access-logfile - \
-          --workers 8 \
+          --workers 3 \
           --bind unix:/run/its.sock \
           core.wsgi:application
 
@@ -82,7 +82,7 @@ sudo systemctl status its.socket
 file /run/its.sock
 sudo journalctl -u its.socket
 curl --unix-socket /run/its.sock localhost
-sudo journalctl -u djangofather
+sudo journalctl -u its
 
 sudo systemctl daemon-reload
 sudo systemctl restart its

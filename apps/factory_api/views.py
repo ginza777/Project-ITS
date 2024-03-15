@@ -13,6 +13,11 @@ class GetProductList(ListAPIView):
     serializer_class = ProductListSerializer
     queryset = Product.objects.all()
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = ProductListSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class GetProduct(APIView):
     queryset = Product.objects.all()
