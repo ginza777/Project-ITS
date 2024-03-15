@@ -9,7 +9,7 @@ class ProductMaterialInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'code')
+    list_display = ("id",'name', 'code')
     inlines = [ProductMaterialInline]
 
 
@@ -20,15 +20,15 @@ class WarehouseInline(admin.TabularInline):
 
 @admin.register(Material)
 class MaterialAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ("id",'name',)
     inlines = [WarehouseInline]
 
 
 @admin.register(ProductMaterial)
 class ProductMaterialAdmin(admin.ModelAdmin):
-    list_display = ('product', 'material', 'quantity')
+    list_display = ("id",'product', 'material', 'quantity')
 
 
 @admin.register(Warehouse)
 class WarehouseAdmin(admin.ModelAdmin):
-    list_display = ('material', 'remainder', 'for_check_remainder_count', 'price')
+    list_display = ("id",'material', 'remainder', 'for_check_remainder_count', 'price')
