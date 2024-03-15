@@ -6,7 +6,7 @@ class Product(models.Model):
     code = models.CharField(max_length=50)
 
     def save(self, *args, **kwargs):
-        if not self.code:
+        if not self.code or self.code == '' or self.code == 'None':
             self.code = str(uuid.uuid4())
         super().save(*args, **kwargs)
 
